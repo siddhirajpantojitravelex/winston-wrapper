@@ -2,7 +2,7 @@
   "name": "travelex_logger",
   "version": "1.0.0",
   "description": "Test Logger Module for Travelex",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "git": "https://github.com/siddhirajpantoji/testLogger.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
