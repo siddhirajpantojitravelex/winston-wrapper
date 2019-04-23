@@ -1,5 +1,5 @@
 {
-  "name": "travelex_logger",
+  "name": "winston_wrapper",
   "version": "1.0.0",
   "description": "Test Logger Module for Travelex",
   "main": "./lib/index.js",
@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "log4js": "^2.5.3"
+    "cls-hooked": "^4.2.2",
+    "uuid": "^3.3.2",
+    "winston": "^3.2.1"
   }
 }
