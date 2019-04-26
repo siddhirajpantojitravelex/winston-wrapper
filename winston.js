@@ -69,14 +69,14 @@ exports.expressMiddleware = (req, res, next) => {
   clsNamespace.bind(req)
   clsNamespace.bind(res)
   var traceID = req.headers.traceID;
-  //console.log("TraceID from header "+traceID)
+  console.log("TraceID from header "+traceID)
   if (!traceID) {
     traceID = uuidv4();
     req.headers.traceID = traceID;
   }
 
   clsNamespace.run(() => {
-    //console.log("TraceID Setting  "+traceID)
+    console.log("TraceID Setting  "+traceID)
     clsNamespace.set('traceID', traceID)
     next()
   })
@@ -103,4 +103,3 @@ exports.serverlessFunction = (event, context, callback) => {
   })
 }
 //module.exports = { getLogger, expressMiddleware, serverlessFunction };
-exports.logTypes = require(`./logType.js`);
