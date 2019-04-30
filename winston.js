@@ -19,7 +19,7 @@ var extConfig = undefined;
 if (isExtConfg) {
   console.log(extPath);
   extConfig = require(extPath);
-  console.log("Ext config read ",extConfig);
+  console.log("Ext config read ", extConfig);
   logConfig = extConfig;
 }
 //var extConfig = require(path.join(appRoot.path,path.sep,'logConfig'));
@@ -69,14 +69,14 @@ exports.expressMiddleware = (req, res, next) => {
   clsNamespace.bind(req)
   clsNamespace.bind(res)
   var traceID = req.headers.traceID;
-  console.log("TraceID from header "+traceID)
+  console.log("TraceID from header " + traceID)
   if (!traceID) {
     traceID = uuidv4();
     req.headers.traceID = traceID;
   }
 
   clsNamespace.run(() => {
-    console.log("TraceID Setting  "+traceID)
+    console.log("TraceID Setting  " + traceID)
     clsNamespace.set('traceID', traceID)
     next()
   })
@@ -102,4 +102,27 @@ exports.serverlessFunction = (event, context, callback) => {
     callback(event, context)
   })
 }
+exports.serverlessPromise = (event) => {
+  return new Promise((resolve, reject) => {
+    clsNamespace.bind(event);
+    var traceID = undefined;
+    if (typeof event.headers == undefined) {
+      event.headers = {}
+    }
+    if (typeof event.headers.traceID == "undefined") {
+      traceID = uuidv4();
+      event.headers.traceID = traceID;
+    }
+    else {
+      traceID = event.headers.traceID;
+    }
+    //console.log(traceID)
+    clsNamespace.run(() => {
+      clsNamespace.set('traceID', traceID)
+      resolve(event);
+      //callback(event, context)
+    })
+  })
+}
+
 //module.exports = { getLogger, expressMiddleware, serverlessFunction };
