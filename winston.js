@@ -13,6 +13,7 @@ const { combine, timestamp, label, printf } = format;
 var logConfig = require('./logConfig');
 //console.log(logConfig);
 //console.log(path.join(appRoot.path,path.sep,'logConfig.js'))
+console.log("Root path "+appRoot.path);
 var extPath = path.join(appRoot.path, path.sep, 'logConfig.js');
 isExtConfg = fs.existsSync(extPath);
 var extConfig = undefined;
