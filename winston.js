@@ -125,5 +125,26 @@ exports.serverlessPromise = (event) => {
     })
   })
 }
-
+exports.serverlessPromise = (event) => {
+  return new Promise((resolve, reject) => {
+    clsNamespace.bind(event);
+    var traceID = undefined;
+    if (typeof event.headers == undefined) {
+      event.headers = {}
+    }
+    if (typeof event.headers.traceID == "undefined") {
+      traceID = uuidv4();
+      event.headers.traceID = traceID;
+    }
+    else {
+      traceID = event.headers.traceID;
+    }
+    //console.log(traceID)
+    clsNamespace.run(() => {
+      clsNamespace.set('traceID', traceID)
+      resolve(event);
+      //callback(event, context)
+    })
+  })
+}
 //module.exports = { getLogger, expressMiddleware, serverlessFunction };
