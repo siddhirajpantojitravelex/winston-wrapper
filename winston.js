@@ -11,16 +11,14 @@ const { createLogger, format, transports } = winston;
 const { combine, timestamp, label, printf } = format;
 
 var logConfig = require('./logConfig');
-//console.log(logConfig);
-//console.log(path.join(appRoot.path,path.sep,'logConfig.js'))
-console.log("Root path "+appRoot.path);
+console.log("Root path " + appRoot.path);
 var extPath = path.join(appRoot.path, path.sep, 'logConfig.js');
 isExtConfg = fs.existsSync(extPath);
 var extConfig = undefined;
 if (isExtConfg) {
-  console.log(extPath);
+  
   extConfig = require(extPath);
-  console.log("Ext config read ", extConfig);
+  
   logConfig = extConfig;
 }
 //var extConfig = require(path.join(appRoot.path,path.sep,'logConfig'));
@@ -34,7 +32,9 @@ const addTraceId = printf(({ level, message, label, timestamp }) => {
   //   // Timestamp 
   // }
   // Formatting of message is done here 
-  return eval("`" + logConfig.pattern + "`");
+  //return eval("`" + logConfig.pattern + "`");
+  return (logConfig.pattern.replace("${label}",label).replace("${level}",level).replace("${message}",message).replace("${timestamp}",timestamp).replace("${traceID}",traceID));
+  // replace with str.replace
   //return `[${label}] ${timestamp} Co-relation-id : ${traceID} Level : ${level}: ${message}`;
   //return message
 })
@@ -70,14 +70,13 @@ exports.expressMiddleware = (req, res, next) => {
   clsNamespace.bind(req)
   clsNamespace.bind(res)
   var traceID = req.headers.traceID;
-  console.log("TraceID from header " + traceID)
   if (!traceID) {
     traceID = uuidv4();
     req.headers.traceID = traceID;
   }
 
   clsNamespace.run(() => {
-    console.log("TraceID Setting  " + traceID)
+    
     clsNamespace.set('traceID', traceID)
     next()
   })
@@ -97,7 +96,7 @@ exports.serverlessFunction = (event, context, callback) => {
   else {
     traceID = event.headers.traceID;
   }
-  //console.log(traceID)
+
   clsNamespace.run(() => {
     clsNamespace.set('traceID', traceID)
     callback(event, context)
@@ -117,7 +116,7 @@ exports.serverlessPromise = (event) => {
     else {
       traceID = event.headers.traceID;
     }
-    //console.log(traceID)
+    
     clsNamespace.run(() => {
       clsNamespace.set('traceID', traceID)
       resolve(event);
@@ -139,7 +138,7 @@ exports.serverlessPromise = (event) => {
     else {
       traceID = event.headers.traceID;
     }
-    //console.log(traceID)
+  
     clsNamespace.run(() => {
       clsNamespace.set('traceID', traceID)
       resolve(event);
