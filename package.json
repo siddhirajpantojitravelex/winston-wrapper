@@ -1,7 +1,7 @@
 {
-  "name": "winston_wrapper",
+  "name": "winston-wrapper",
   "version": "1.0.0",
-  "description": "Test Logger Module for Travelex",
+  "description": "Logging Libraby using winston ",
   "main": "winston.js",
   "git": "https://github.com/siddhirajpantoji/testLogger.git",
   "scripts": {
