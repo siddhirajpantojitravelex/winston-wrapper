@@ -69,8 +69,22 @@ logger.info("Inside anyFun ")
 ```
 
 ### Custom Configuration
+We can provide custom Configuration for logger which is internally used as [winston transports] . 
+Currently we are supporting Built in Transports ( [file transport] and [console transport]). 
+ 
+Steps to provide custom logging Config 
+* Create a file logConfig.js in your app root path ( Eg. where package.json is located ) 
+* You can specify the pattern and options in the file.  
+* Package will pick the file and load your logger during start `require(winston-wrapper)`
+
+```js
+// Code to come over here 
+```
 [winston]:<https://github.com/winstonjs/winston#readme>
 [express]:<http://expressjs.com/>
 [serverless]:<https://serverless.com/framework/docs/providers/aws/guide/quick-start/>
 [full example]:<https://github.com/siddhirajpantojitravelex/winston-wrapper-example>
 [enable ssh]:<https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account>
+[winston transports]:<https://github.com/winstonjs/winston/blob/master/docs/transports.md>
+[file transport]:<https://github.com/winstonjs/winston/blob/master/docs/transports.md#file-transport>
+[console transport]:<https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport>

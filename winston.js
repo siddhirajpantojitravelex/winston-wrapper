@@ -10,9 +10,9 @@ const clsNamespace = cls.createNamespace('app')
 const { createLogger, format, transports } = winston;
 const { combine, timestamp, label, printf } = format;
 
-var logConfig = require('./logConfig');
+var logConfig = require('./log-config');
 console.log("Root path " + appRoot.path);
-var extPath = path.join(appRoot.path, path.sep, 'logConfig.js');
+var extPath = path.join(appRoot.path, path.sep, 'log-config.js');
 isExtConfg = fs.existsSync(extPath);
 var extConfig = undefined;
 if (isExtConfg) {
