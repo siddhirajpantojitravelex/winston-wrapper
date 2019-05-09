@@ -78,8 +78,48 @@ Steps to provide custom logging Config
 * Package will pick the file and load your logger during start `require(winston-wrapper)`
 
 ```js
-// Code to come over here 
+// log-config.js
+var logTypes = require('winston-wrapper/log-type')
+module.exports = {
+    pattern : " external pattern [${label}] ${timestamp} [Co-relation-id : ${traceID}] [${level}]: ${message} ",
+    appenders : [
+      {
+        // Console 
+        type:logTypes.Console,
+        options : {
+          level: 'debug',
+          handleExceptions: true
+        }
+      }, 
+      {
+        // File - Rolling File appender  
+        type:logTypes.File,
+        options : {
+          level: 'info',
+          filename: 'app.log',
+          handleExceptions: true,
+          maxsize: 5242880, // 5MB
+          maxFiles: 5,
+          
+        }
+      }, 
+      {
+        // Only File based on error Level 
+        type:logTypes.File,
+        options : {
+          level: 'error',
+          filename: 'error.log',
+          handleExceptions: true,
+          json: true,
+          colorize: false,
+        }
+      }
+    ]
+  }
 ```
+`options` used above are of [file transport] and [console transport]
+
+
 [winston]:<https://github.com/winstonjs/winston#readme>
 [express]:<http://expressjs.com/>
 [serverless]:<https://serverless.com/framework/docs/providers/aws/guide/quick-start/>
