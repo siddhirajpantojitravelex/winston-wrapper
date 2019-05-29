@@ -1,6 +1,6 @@
 var logTypes = require('./log-type');
 module.exports = {
-    pattern : "[${label}] ${timestamp} [Co-relation-id : ${traceID}] [${level}]: ${message} ",
+    pattern : "[${label}] ${timestamp} [Co-relation-id : ${correlationid}] [${level}]: ${message} ",
     appenders : [
       {
         // Console 

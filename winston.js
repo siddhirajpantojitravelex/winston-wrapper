@@ -26,14 +26,14 @@ if (isExtConfg) {
 
 const addTraceId = printf(({ level, message, label, timestamp }) => {
   // let message = info.message
-  const traceID = clsNamespace.get('traceID')
+  const correlationid = clsNamespace.get('correlationid')
   // if (traceID) {
   //   message = `[co-relation-id: ${traceID}]: ${message}` 
   //   // Timestamp 
   // }
   // Formatting of message is done here 
   //return eval("`" + logConfig.pattern + "`");
-  return (logConfig.pattern.replace("${label}",label).replace("${level}",level).replace("${message}",message).replace("${timestamp}",timestamp).replace("${traceID}",traceID));
+  return (logConfig.pattern.replace("${label}",label).replace("${level}",level).replace("${message}",message).replace("${timestamp}",timestamp).replace("${correlationid}",traceID));
   // replace with str.replace
   //return `[${label}] ${timestamp} Co-relation-id : ${traceID} Level : ${level}: ${message}`;
   //return message
@@ -89,36 +89,36 @@ exports.serverlessFunction = (event, context, callback) => {
   if (typeof event.headers == undefined) {
     event.headers = {}
   }
-  if (typeof event.headers.traceID == "undefined") {
-    traceID = uuidv4();
-    event.headers.traceID = traceID;
+  if (typeof event.headers.correlationid == "undefined") {
+    correlationid = uuidv4();
+    event.headers.correlationid = correlationid;
   }
   else {
-    traceID = event.headers.traceID;
+    correlationid = event.headers.correlationid;
   }
 
   clsNamespace.run(() => {
-    clsNamespace.set('traceID', traceID)
+    clsNamespace.set('correlationid', correlationid)
     callback(event, context)
   })
 }
 exports.serverlessPromise = (event) => {
   return new Promise((resolve, reject) => {
     clsNamespace.bind(event);
-    var traceID = undefined;
+    var correlationid = undefined;
     if (typeof event.headers == undefined) {
       event.headers = {}
     }
-    if (typeof event.headers.traceID == "undefined") {
-      traceID = uuidv4();
-      event.headers.traceID = traceID;
+    if (typeof event.headers.correlationid == "undefined") {
+      correlationid = uuidv4();
+      event.headers.correlationid = correlationid;
     }
     else {
-      traceID = event.headers.traceID;
+      correlationid = event.headers.correlationid;
     }
     
     clsNamespace.run(() => {
-      clsNamespace.set('traceID', traceID)
+      clsNamespace.set('correlationid', correlationid)
       resolve(event);
       //callback(event, context)
     })
@@ -127,20 +127,20 @@ exports.serverlessPromise = (event) => {
 exports.serverlessPromise = (event) => {
   return new Promise((resolve, reject) => {
     clsNamespace.bind(event);
-    var traceID = undefined;
+    var correlationid = undefined;
     if (typeof event.headers == undefined) {
       event.headers = {}
     }
-    if (typeof event.headers.traceID == "undefined") {
-      traceID = uuidv4();
-      event.headers.traceID = traceID;
+    if (typeof event.headers.correlationid == "undefined") {
+      correlationid = uuidv4();
+      event.headers.correlationid = correlationid;
     }
     else {
-      traceID = event.headers.traceID;
+      correlationid = event.headers.correlationid;
     }
   
     clsNamespace.run(() => {
-      clsNamespace.set('traceID', traceID)
+      clsNamespace.set('correlationid', correlationid)
       resolve(event);
       //callback(event, context)
     })
