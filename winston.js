@@ -25,18 +25,8 @@ if (isExtConfg) {
 
 
 const addTraceId = printf(({ level, message, label, timestamp }) => {
-  // let message = info.message
   const correlationid = clsNamespace.get('correlationid')
-  // if (traceID) {
-  //   message = `[co-relation-id: ${traceID}]: ${message}` 
-  //   // Timestamp 
-  // }
-  // Formatting of message is done here 
-  //return eval("`" + logConfig.pattern + "`");
-  return (logConfig.pattern.replace("${label}",label).replace("${level}",level).replace("${message}",message).replace("${timestamp}",timestamp).replace("${correlationid}",traceID));
-  // replace with str.replace
-  //return `[${label}] ${timestamp} Co-relation-id : ${traceID} Level : ${level}: ${message}`;
-  //return message
+  return (logConfig.pattern.replace("${label}",label).replace("${level}",level).replace("${message}",message).replace("${timestamp}",timestamp).replace("${correlationid}",correlationid));
 })
 // instantiate a new Winston Logger with the settings defined above
 exports.getLogger = (loggerName) => {
