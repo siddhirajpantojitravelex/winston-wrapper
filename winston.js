@@ -5,22 +5,24 @@ const uuidv4 = require('uuid/v4');
 var appRoot = require('app-root-path');
 const path = require('path');
 const fs = require('fs');
-
+const find = require('find');
 const clsNamespace = cls.createNamespace('app')
 const { createLogger, format, transports } = winston;
 const { combine, timestamp, label, printf } = format;
 
-var logConfig = require('./log-config');
+var logConfig = require('./log-config.js');
 console.log("Root path " + appRoot.path);
-var extPath = path.join(appRoot.path, path.sep, 'log-config.js');
-isExtConfg = fs.existsSync(extPath);
-var extConfig = undefined;
-if (isExtConfg) {
-  
-  extConfig = require(extPath);
-  
-  logConfig = extConfig;
+
+let files = find.fileSync(/\log-config.js$/, appRoot.path)
+
+if (files) {
+    if (files && files.length > 0) {
+      logConfig = require(files[0])
+    } else {
+        console.log('external config file not found')
+    }
 }
+
 //var extConfig = require(path.join(appRoot.path,path.sep,'logConfig'));
 
 
@@ -30,6 +32,7 @@ const addTraceId = printf(({ level, message, label, timestamp }) => {
 })
 // instantiate a new Winston Logger with the settings defined above
 exports.getLogger = (loggerName) => {
+  console.log("Recieved logger name "+loggerName)
   // var logger = new winston.createLogger({
   //   format: addTraceId,
   //   transports: [
@@ -75,11 +78,16 @@ exports.expressMiddleware = (req, res, next) => {
 exports.serverlessFunction = (event, context, callback) => {
   // Same as binding request event 
   clsNamespace.bind(event);
-  var traceID = undefined;
-  if (typeof event.headers == undefined) {
+  var correlationid = undefined;
+  console.log("Headers",event.headers);
+  console.log("Type of "+ typeof event.headers );
+  console.log(typeof event.headers == undefined)
+  if (!event.headers) {
+    console.log("Inside If for checking undefined ")
     event.headers = {}
   }
-  if (typeof event.headers.correlationid == "undefined") {
+  if (!event.headers.correlationid) {
+    console.log("Setting Co relation id ");
     correlationid = uuidv4();
     event.headers.correlationid = correlationid;
   }

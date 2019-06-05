@@ -12,6 +12,7 @@
   "dependencies": {
     "app-root-path": "^2.2.1",
     "cls-hooked": "^4.2.2",
+    "find": "^0.3.0",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
   }
