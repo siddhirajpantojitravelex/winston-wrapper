@@ -32,15 +32,6 @@ const addTraceId = printf(({ level, message, label, timestamp }) => {
 })
 // instantiate a new Winston Logger with the settings defined above
 exports.getLogger = (loggerName) => {
-  console.log("Recieved logger name "+loggerName)
-  // var logger = new winston.createLogger({
-  //   format: addTraceId,
-  //   transports: [
-  //     new winston.transports.File(options.file),
-  //     new winston.transports.Console(options.console)
-  //   ],
-  //   exitOnError: false, // do not exit on handled exceptions
-  // });
   var transportsArr = [];
   for (i = 0; i < logConfig.appenders.length; i++) {
     var appender = logConfig.appenders[i];
@@ -79,15 +70,10 @@ exports.serverlessFunction = (event, context, callback) => {
   // Same as binding request event 
   clsNamespace.bind(event);
   var correlationid = undefined;
-  console.log("Headers",event.headers);
-  console.log("Type of "+ typeof event.headers );
-  console.log(typeof event.headers == undefined)
   if (!event.headers) {
-    console.log("Inside If for checking undefined ")
     event.headers = {}
   }
   if (!event.headers.correlationid) {
-    console.log("Setting Co relation id ");
     correlationid = uuidv4();
     event.headers.correlationid = correlationid;
   }
