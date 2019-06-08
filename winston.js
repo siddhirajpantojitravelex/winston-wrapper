@@ -53,15 +53,14 @@ exports.expressMiddleware = (req, res, next) => {
   // req and res are event emitters. We want to access CLS context inside of their event callbacks
   clsNamespace.bind(req)
   clsNamespace.bind(res)
-  var traceID = req.headers.traceID;
-  if (!traceID) {
-    traceID = uuidv4();
-    req.headers.traceID = traceID;
+  var correlationid = req.headers.correlationid;
+  if (!correlationid) {
+    correlationid = uuidv4();
+    req.headers.correlationid = correlationid;
   }
 
   clsNamespace.run(() => {
-    
-    clsNamespace.set('traceID', traceID)
+    clsNamespace.set('correlationid', correlationid)
     next()
   })
 }
