@@ -3,11 +3,9 @@ var winston = require('winston');
 const cls = require('cls-hooked');
 const uuidv4 = require('uuid/v4');
 var appRoot = require('app-root-path');
-const path = require('path');
-const fs = require('fs');
 const find = require('find');
 const clsNamespace = cls.createNamespace('app')
-const { createLogger, format, transports } = winston;
+const { createLogger, format } = winston;
 const { combine, timestamp, label, printf } = format;
 
 var logConfig = require('./log-config.js');
@@ -83,50 +81,6 @@ exports.serverlessFunction = (event, context, callback) => {
   clsNamespace.run(() => {
     clsNamespace.set('correlationid', correlationid)
     callback(event, context)
-  })
-}
-exports.serverlessPromise = (event) => {
-  return new Promise((resolve, reject) => {
-    clsNamespace.bind(event);
-    var correlationid = undefined;
-    if (typeof event.headers == undefined) {
-      event.headers = {}
-    }
-    if (typeof event.headers.correlationid == "undefined") {
-      correlationid = uuidv4();
-      event.headers.correlationid = correlationid;
-    }
-    else {
-      correlationid = event.headers.correlationid;
-    }
-    
-    clsNamespace.run(() => {
-      clsNamespace.set('correlationid', correlationid)
-      resolve(event);
-      //callback(event, context)
-    })
-  })
-}
-exports.serverlessPromise = (event) => {
-  return new Promise((resolve, reject) => {
-    clsNamespace.bind(event);
-    var correlationid = undefined;
-    if (typeof event.headers == undefined) {
-      event.headers = {}
-    }
-    if (typeof event.headers.correlationid == "undefined") {
-      correlationid = uuidv4();
-      event.headers.correlationid = correlationid;
-    }
-    else {
-      correlationid = event.headers.correlationid;
-    }
-  
-    clsNamespace.run(() => {
-      clsNamespace.set('correlationid', correlationid)
-      resolve(event);
-      //callback(event, context)
-    })
   })
 }
 //module.exports = { getLogger, expressMiddleware, serverlessFunction };
