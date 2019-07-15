@@ -6,7 +6,7 @@ module.exports = {
         // Console 
         type:logTypes.Console,
         options : {
-          level: 'debug',
+          level: process.env.LOG_LEVEL || 'info',
           handleExceptions: true,
           json: false,
           colorize: true,
